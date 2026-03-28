@@ -8,38 +8,31 @@ interface Question {
 
 it("Survey init", async ()  => {
    const { ethers } = await network.connect();
-
    const title = "막무가내 설문조사";
-   const description = "";
+   const description = 
+   "중앙화된 설문조사...";
    const questions: Question[] = [
     {
-        question: "",
+        question: "누가 내 응답을 관리할 때 ...",
         options: [
-            "구글폼 운영자"
+            "구글폼 운영자",
+            "블록체인 네트워크 참여자",
+            "상관없음",
         ],
     },
    ];
-   const s = await ethers.deployContract("Survey", [
-    title,
+
+   const factory = await ethers.deployContract("SurveyFactory",[]);
+   await factory.createSurvey({
+    title, 
     description, 
     questions
-]);
-   const _title = await s.title();
-   const _desc = await s.description();
-   const _questions = await s.getQuestions() as Question[];
-   expect(_title).to.equal(title);
-   expect(_desc).to.equal(description);
-   expect(_questions[0].options).deep.equal(questions[0].options);
-
-   const signers = await ethers.getSigners();
-   const respondent = signers[1];
-   await s.connect(respondent);
-   await s.submitAnswer({
-    respondent:respondent.address,
-    answers: [1],
    });
 
-   console.log(await s.getAnswers);
+   const surveys = await factory.getSurveys();
+   const surveyC = await ethers.getContractFactory("Survey");
+   const survey = await surveyC.attach(surveys[0]);
+   console.log(await survey.getQuestions());
 });
 
 
