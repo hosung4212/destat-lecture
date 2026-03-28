@@ -1,4 +1,5 @@
 import { expect } from "chai";    
+import { formatEther } from "ethers";
 import { network } from "hardhat";
 
 interface Question {
@@ -22,17 +23,44 @@ it("Survey init", async ()  => {
     },
    ];
 
-   const factory = await ethers.deployContract("SurveyFactory",[]);
-   await factory.createSurvey({
+   const factory = await ethers.deployContract("SurveyFactory",[
+    ethers.parseEther("50"),
+    ethers.parseEther("0.1"),
+   ]);
+   const tx = await factory.createSurvey({
     title, 
     description, 
+    targetNumber: 100,
     questions
+   },
+   {
+    value: ethers.parseEther("100"),
    });
+   const receipt = await tx.wait();
+   let surveyAddress;
+   receipt?.logs.forEach(log => {
+    const event = factory.interface.parseLog(log);
+    if (event?.name === "SurveyCreated") {
+        surveyAddress = event.args[0];
+    }
+});
 
-   const surveys = await factory.getSurveys();
+   //const surveys = await factory.getSurveys();
+
    const surveyC = await ethers.getContractFactory("Survey");
-   const survey = await surveyC.attach(surveys[0]);
-   console.log(await survey.getQuestions());
+   const signers = await ethers.getSigners();
+   const respondent = signers[0];
+   if(surveyAddress) {
+    const survey = await surveyC.attach(surveyAddress);
+    await survey.connect(respondent);
+    console.log(await formatEther(await ethers.provider.getBalance(respondent)));
+    const submitTx = await survey.submitAnswer({
+        respondent,
+        answers: [1],
+    });
+    await submitTx.wait(0);
+    console.log(await formatEther(await ethers.provider.getBalance(respondent)));  
+   }
 });
 
 
