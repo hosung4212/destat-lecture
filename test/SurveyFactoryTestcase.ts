@@ -10,7 +10,7 @@ describe("SurveyFactory Contract", () => {
     ethers = context.ethers;
     [owner, respondent1, respondent2] = await ethers.getSigners();
 
-    // 1. SurveyFactory 배포 (생성자 인자 전달)
+    // 배포
     factory = await ethers.deployContract("SurveyFactory", [
         ethers.parseEther("50"), // min_pool_amount
         ethers.parseEther("0.1"), // min_reward_amount
