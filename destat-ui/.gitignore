@@ -1,0 +1,15 @@
+.DS_Store
+.env*
+
+#Dependency 
+/node_modules/
+
+# React Router
+.react-router/
+/build/
+dist/
+
+# Editor settings
+.vscode/
+.DS_Store
+.idea/*
