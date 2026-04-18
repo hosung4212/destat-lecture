@@ -1,5 +1,5 @@
 # Node modules
-/node_modules/
+node_modules/
 
 # Compilation output
 dist/
@@ -14,9 +14,12 @@ artifacts/
 cache/
 
 # Typechain output
-/types
+types/
 
 # Hardhat coverage reports
-/coverage
+coverage/
 
-.vscode
+.vscode/
+
+.env*
+
