@@ -97,6 +97,7 @@ export default function Survey({ params }: Route.ComponentProps) {
 
     const { writeContract } = useWriteContract();
     const submitAnswer = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         if (!address) {
             alert('please connect before submit');
             return;
@@ -104,7 +105,7 @@ export default function Survey({ params }: Route.ComponentProps) {
         const formData = new FormData(e.currentTarget);
         const answers: number[] = [];
         for (const value of formData.values()) {
-            answers.push(Number(answers));
+            answers.push(Number(value));
         }
 
         writeContract({
