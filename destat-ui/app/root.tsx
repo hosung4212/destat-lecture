@@ -21,7 +21,7 @@ export const config = createConfig(
     {
         chains: [kairos, hardhat],
         transports: {
-            [kairos.id]: http("https://kaia-testnet.g.alchemy.com/v2/lTfr1PYn2Rys13FmfuEN3"),
+            [kairos.id]: http("https://public-en-kairos.node.kaia.io"),
             [hardhat.id]: http(),
         }
     },
