@@ -19,10 +19,10 @@ import { WagmiProvider } from 'wagmi'
 
 export const config = createConfig(
     {
-        chains: [hardhat, kairos],
+        chains: [kairos, hardhat],
         transports: {
-            [hardhat.id]: http(),
             [kairos.id]: http("https://kaia-testnet.g.alchemy.com/v2/lTfr1PYn2Rys13FmfuEN3"),
+            [hardhat.id]: http(),
         }
     },
 );
